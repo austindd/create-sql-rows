@@ -1,0 +1,21 @@
+{
+  "name": "create-sql-rows",
+  "version": "1.0.0",
+  "description": "Generate random (but sensible) values for INSERT queries in SQL syntax, based on defined column info.",
+  "main": "get-values.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "app",
+    "SQL",
+    "MySQL",
+    "JavaScript",
+    "JS",
+    "query",
+    "database"
+  ],
+  "author": "Austin Davis",
+  "license": "ISC"
+}
