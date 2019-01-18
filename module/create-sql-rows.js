@@ -165,7 +165,6 @@ module.exports.generateRows = (outputFilePath = './output/output.txt',
     }
 ) => {
 
-
     if (numberOfRows !== undefined && cols !== undefined) {
         let output = ''; // <--- main output string
         for (let i = 0; i < numberOfRows; i++) {
@@ -187,9 +186,17 @@ module.exports.generateRows = (outputFilePath = './output/output.txt',
             const rowObjKeys = Object.keys(rowObj);
             rowObjKeys.forEach((item, index) => {
                 if (index < rowObjKeys.length - 1) {
-                    rowText += `${rowObj[item]}, `;
+                    if (typeof rowObj[item] === 'string') {
+                        rowText += `"${rowObj[item]}", `; // include quotation marks for string values
+                    } else {
+                        rowText += `${rowObj[item]}, `;
+                    }
                 } else {
-                    rowText += `${rowObj[item]}),\r\n`;
+                    if (typeof rowObj[item] === 'string') {
+                        rowText += `"${rowObj[item]}"),\r\n`; // include quotations marks for string values
+                    } else {
+                        rowText += `${rowObj[item]}),\r\n`;
+                    }
                 }
             });
 
