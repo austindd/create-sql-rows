@@ -1,7 +1,7 @@
 # create-sql-rows
 A small Node.JS tool for generating random (but sensible) row values for INSERT queries in SQL syntax, based on column info that **YOU** define!
 
-The tool is currently working properly, and I will be adding more features to it periodically.
+The tool is currently working properly (as far as I know), and I will be adding more features to it periodically.
 
 Contributions are welcome!
 
