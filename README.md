@@ -46,7 +46,7 @@ Running the above code in Node will write 100 rows of text to the specified outp
 (5, EUGENE, datelunch@example.com, 8f65767b10, 7e938448-772a-480d-b3f7-f3e0aab0a1dc),
 (...), ...
 ```
-You can copy and paste the text file into your SQL query, specifically within the VALUES argument for an INSERT statement.
+You can copy and paste the text file into your SQL query, specifically within the VALUES argument for an INSERT INTO statement.
 
 *Voilà!* Now you can quickly test your SQL schema using realistic data tables!
 
