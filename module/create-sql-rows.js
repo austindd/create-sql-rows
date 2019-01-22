@@ -166,7 +166,7 @@ module.exports.generateRows = (outputFilePath = './output/output.txt',
 ) => {
 
     if (numberOfRows !== undefined && cols !== undefined) {
-        let output = ''; // <--- main output string
+        let output = ''; // <--- main output string (note: output string is outside for-loop)
         for (let i = 0; i < numberOfRows; i++) {
 
             // Generate JS object based on user-specified column names/values:
@@ -175,27 +175,38 @@ module.exports.generateRows = (outputFilePath = './output/output.txt',
                 let val = '';
                 if (col.staticValue) {
                     val = `${col.staticValue}, `;
-                } else if (col.getValue) {
-                    val = col.getValue();
+                } else if (col.getValue !== undefined && col.getValue !== null) {
+                    if (typeof col.getValue === 'function') { // if a function was passed, call function to get value
+                        val = col.getValue();
+                    } else { // if a non-function value was passed, use the value.
+                        val = col.getValue;
+                    }
                 }
-                rowObj[col.name] = val;
+                rowObj[col.name] = {value: val, datatype: col.datatype}
             });
+
+
 
             // Generate output text:
             let rowText = '(';
             const rowObjKeys = Object.keys(rowObj);
             rowObjKeys.forEach((item, index) => {
-                if (index < rowObjKeys.length - 1) {
-                    if (typeof rowObj[item] === 'string') {
-                        rowText += `"${rowObj[item]}", `; // include quotation marks for string values
+            /* iterating through each row to append text to output file */
+                if (index < rowObjKeys.length - 1) { /* If current column is not the last column of the row, then append string normally */
+                    if ((/char|varchar|text|tinytext|mediumtext|longtext/i).test(rowObj[item].datatype)) {
+                        rowText += `"${rowObj[item].value}", `; // include quotation marks for string values
+                    } else if ((/int|tinyint|smallint|mediumint|bigint|float|double|decimal/i).test(rowObj[item].datatype)) {
+                        rowText += `${rowObj[item].value}, `;
                     } else {
-                        rowText += `${rowObj[item]}, `;
+                        console.log(`error in datatype: row_${index}`);
                     }
-                } else {
-                    if (typeof rowObj[item] === 'string') {
-                        rowText += `"${rowObj[item]}"),\r\n`; // include quotations marks for string values
+                } else { /* If current column IS the last column of the row, then appnd string and close parentheses for row */
+                    if ((/char|varchar|text|tinytext|mediumtext|longtext/i).test(rowObj[item].datatype)) {
+                        rowText += `"${rowObj[item].value}"),\r\n`; // include quotations marks for string values
+                    } else if ((/int|tinyint|smallint|mediumint|bigint|float|double|decimal/i).test(rowObj[item].datatype)) {
+                        rowText += `${rowObj[item].value}),\r\n`;
                     } else {
-                        rowText += `${rowObj[item]}),\r\n`;
+                        console.log(`error in datatype: row_${index}`);
                     }
                 }
             });
